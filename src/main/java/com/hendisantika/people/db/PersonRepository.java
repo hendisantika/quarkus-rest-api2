@@ -99,4 +99,14 @@ public class PersonRepository {
         }
         return person;
     }
+
+    public boolean deleteById(UUID id) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE)) {
+            statement.setObject(1, id);
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
 }
