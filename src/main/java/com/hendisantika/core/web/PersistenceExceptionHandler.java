@@ -1,6 +1,6 @@
-package com.hendisantika.web;
+package com.hendisantika.core.web;
 
-import com.hendisantika.core.PersistenceException;
+import com.hendisantika.core.db.PersistenceException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

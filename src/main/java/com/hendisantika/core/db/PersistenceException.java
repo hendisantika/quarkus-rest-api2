@@ -1,4 +1,4 @@
-package com.hendisantika.core;
+package com.hendisantika.core.db;
 
 /**
  * Created by IntelliJ IDEA.
