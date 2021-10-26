@@ -55,4 +55,22 @@ public class PersonRepository {
         }
         return result;
     }
+
+    public Person findById(UUID id) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_ID)) {
+            statement.setObject(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new Person(
+                            UUID.fromString(resultSet.getString("id")),
+                            resultSet.getString("name"),
+                            resultSet.getInt("age"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+        return null;
+    }
 }
