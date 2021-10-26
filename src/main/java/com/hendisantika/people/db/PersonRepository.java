@@ -73,4 +73,18 @@ public class PersonRepository {
         }
         return null;
     }
+
+    public Person insert(Person person) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT)) {
+            statement.setObject(1, person.getId());
+            statement.setString(2, person.getName());
+            statement.setInt(3, person.getAge());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+        return person;
+    }
+
 }
