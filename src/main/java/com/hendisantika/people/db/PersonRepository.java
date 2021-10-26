@@ -23,4 +23,8 @@ public class PersonRepository {
     private static final String DELETE = "DELETE FROM people WHERE id = ?";
 
     private final DataSource dataSource;
+
+    public PersonRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }
