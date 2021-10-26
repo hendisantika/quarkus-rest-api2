@@ -87,4 +87,16 @@ public class PersonRepository {
         return person;
     }
 
+    public Person update(Person person) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+            statement.setString(1, person.getName());
+            statement.setInt(2, person.getAge());
+            statement.setObject(3, person.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+        return person;
+    }
 }
