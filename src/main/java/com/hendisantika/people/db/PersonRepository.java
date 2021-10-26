@@ -1,7 +1,17 @@
 package com.hendisantika.people.db;
 
+import com.hendisantika.core.db.PersistenceException;
+import com.hendisantika.people.model.Person;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,5 +36,23 @@ public class PersonRepository {
 
     public PersonRepository(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public List<Person> findAll() {
+        List<Person> result = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                result.add(
+                        new Person(
+                                UUID.fromString(resultSet.getString("id")),
+                                resultSet.getString("name"),
+                                resultSet.getInt("age")));
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException("boom", e.getCause());
+        }
+        return result;
     }
 }
