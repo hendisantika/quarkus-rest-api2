@@ -3,6 +3,7 @@ package com.hendisantika.people.web;
 import com.hendisantika.people.db.PersonRepository;
 import com.hendisantika.people.model.Person;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -64,5 +65,15 @@ public class PersonResource {
             throw new PersonNotFoundException(id);
         }
         return personRepository.update(new Person(id, person.getName(), person.getAge()));
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void delete(@PathParam("id") UUID id) {
+        if (personRepository.findById(id) == null) {
+            throw new PersonNotFoundException(id);
+        }
+        personRepository.deleteById(id);
     }
 }
