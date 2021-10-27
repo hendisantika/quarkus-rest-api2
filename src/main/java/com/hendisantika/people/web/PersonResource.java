@@ -4,6 +4,7 @@ import com.hendisantika.people.db.PersonRepository;
 import com.hendisantika.people.model.Person;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -45,5 +46,12 @@ public class PersonResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Person getPersonById(@PathParam("id") UUID id) {
         return personRepository.findById(id);
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Person post(Person person) {
+        return personRepository.insert(
+                new Person(UUID.randomUUID(), person.getName(), person.getAge()));
     }
 }
