@@ -5,6 +5,7 @@ import com.hendisantika.people.model.Person;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -53,5 +54,15 @@ public class PersonResource {
     public Person post(Person person) {
         return personRepository.insert(
                 new Person(UUID.randomUUID(), person.getName(), person.getAge()));
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Person put(@PathParam("id") UUID id, Person person) {
+        if (personRepository.findById(id) == null) {
+            throw new PersonNotFoundException(id);
+        }
+        return personRepository.update(new Person(id, person.getName(), person.getAge()));
     }
 }
